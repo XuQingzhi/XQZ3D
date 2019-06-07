@@ -35,12 +35,13 @@ function obj(Vertexs, Meshs, Position, Angle){
     this.Angle = Angle;
 }
 
-function camara(Position, Angle, Screen, Plan, D) {
+function camara(Position, Angle, Screen, Plan, D, Scaling) {
     this.Screen = Screen;
     this.Plan = Plan;
     this.Position = Position;
     this.Angle = Angle;
     this.D = D;
+    this.Scaling = Scaling * D;
 }
 
 function LocalToWorld(obj) {
@@ -62,8 +63,26 @@ function WorldToCamara(obj, camara) {
 function PerspectiveProjection(obj, camara) {
     for (var i = 0; i < obj.length; i++) {
         for (var v = 0; v < obj[i].Vertexs.length; v++) {
-            obj[i].Vertexs[v].ScreenPosition.x = (camara.Screen.x / camara.Plan.x) * camara.D * obj[i].Vertexs[v].CamaraPosition.x / obj[i].Vertexs[v].CamaraPosition.z + (0.5 * (camara.Screen.x));
-            obj[i].Vertexs[v].ScreenPosition.y = -(camara.Screen.y / camara.Plan.y) *camara.D * obj[i].Vertexs[v].CamaraPosition.y / obj[i].Vertexs[v].CamaraPosition.z + (0.5 * (camara.Screen.y));
+            if(obj[i].Vertexs[v].CamaraPosition.z > camara.D){
+                obj[i].Vertexs[v].ScreenPosition.x = camara.Scaling * (obj[i].Vertexs[v].CamaraPosition.x / obj[i].Vertexs[v].CamaraPosition.z) + (0.5 * (camara.Screen.x));
+                obj[i].Vertexs[v].ScreenPosition.y = -camara.Scaling * (obj[i].Vertexs[v].CamaraPosition.y / obj[i].Vertexs[v].CamaraPosition.z) + (0.5 * (camara.Screen.y));
+            }else{
+                obj[i].Vertexs[v].ScreenPosition.x = null;
+                obj[i].Vertexs[v].ScreenPosition.y = null;  
+            }
+        }
+    }
+}
+
+function PrintObjectMesh(obj, ctx){
+    for (var i = 0; i < obj.length; i++) {
+        for (var m = 0; m < obj[i].Meshs.length; m++) {
+            ctx.beginPath();
+            ctx.moveTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y);
+            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y);
+            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+            ctx.fill();
         }
     }
 }

@@ -14,24 +14,67 @@
 //        var vector4test = new vector4(0, 0, 1);
 
 //        var vertex1 = new vertex(vector4test);
+        var camara1 = new camara(new vector4(0, 0, -10), new angle3(0, 0, 0), new vector2(1000, 500), new vector2(2, 1), 1, 1000);
 
-        var obj1 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0))], [new mesh(0, 1, 2)], new vector4(0, 0, 0), new angle3(0, 0, 0));
-        var camara1 = new camara(new vector4(10, 0, -10), new angle3(0, 0, 0), new vector2(1000, 500), new vector2(2, 1), 1);
+        var obj1 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(0, 0, 0), new angle3(0, 0, 0));
+        var obj2 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(2, 2, 2), new angle3(0, 0, 0));
+        var obj3 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(1, 3, 6), new angle3(0, 0, 0));
+        var obj4 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(35, 1, 8), new angle3(0, 0, 0));
+        var obj5 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(12, 0, 0), new angle3(0, 0, 0));
+        var obj6 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(6, 7, 2), new angle3(0, 0, 0));
+        var obj7 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(5, 7, 8), new angle3(0, 0, 0));
 
-        LocalToWorld([obj1]);
-        WorldToCamara([obj1], camara1);
-        PerspectiveProjection([obj1], camara1);
         
-        console.log(obj1);
-        console.log(camara1);
+        var ObjectList = [obj1, obj2, obj3, obj4, obj5, obj6, obj7];
 
-        ctx.beginPath();
-        ctx.fillStyle = "rgb(255,0,0)";
-        ctx.moveTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
-        ctx.lineTo(obj1.Vertexs[1].ScreenPosition.x, obj1.Vertexs[1].ScreenPosition.y);
-        ctx.lineTo(obj1.Vertexs[2].ScreenPosition.x, obj1.Vertexs[2].ScreenPosition.y);
-        ctx.lineTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
-        ctx.stroke();
+
+        function MainLoop(){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            LocalToWorld(ObjectList);
+            WorldToCamara(ObjectList, camara1);
+            PerspectiveProjection(ObjectList, camara1);
+
+            /*
+            ctx.beginPath();
+            ctx.fillStyle = "rgb(255,0,0)";
+            ctx.moveTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
+            ctx.lineTo(obj1.Vertexs[1].ScreenPosition.x, obj1.Vertexs[1].ScreenPosition.y);
+            ctx.lineTo(obj1.Vertexs[2].ScreenPosition.x, obj1.Vertexs[2].ScreenPosition.y);
+            ctx.lineTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
+            ctx.fill();
+            */
+
+            PrintObjectMesh(ObjectList, ctx);
+
+            window.requestAnimationFrame(MainLoop);
+        }
+
+        MainLoop();
+    </script>
+
+    <script type="text/javascript" language=JavaScript charset="UTF-8">
+            document.onkeydown=function(event){
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==65){ // 按 A 
+                camara1.Position.x -= 0.1;
+            }
+            if(e && e.keyCode==68){ // 按 D 
+                camara1.Position.x += 0.1;
+            }
+            if(e && e.keyCode==83){ // 按 S 
+                camara1.Position.z -= 0.1;
+            }
+            if(e && e.keyCode==87){ // 按 W 
+                camara1.Position.z += 0.1;
+            }
+            if(e && e.keyCode==16){ // 按 Shift 
+                camara1.Position.y -= 0.1;
+            }
+            if(e && e.keyCode==32){ // 按 Space 
+                camara1.Position.y += 0.1;
+            }
+        };
     </script>
 </body>
 </html>
