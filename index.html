@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<!--    <meta charset="utf-8" />-->
+    <title>XQZ3D-JavaScript</title>
+</head>
+<body>
+    <canvas id="canvas" width="1000" height="500"></canvas>
+    <script src="./Functions.js"></script>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+//        var vector4test = new vector4(0, 0, 1);
+
+//        var vertex1 = new vertex(vector4test);
+
+        var obj1 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0))], [new mesh(0, 1, 2)], new vector4(0, 0, 0), new angle3(0, 0, 0));
+        var camara1 = new camara(new vector4(10, 0, -10), new angle3(0, 0, 0), new vector2(1000, 500), new vector2(2, 1), 1);
+
+        LocalToWorld([obj1]);
+        WorldToCamara([obj1], camara1);
+        PerspectiveProjection([obj1], camara1);
+        
+        console.log(obj1);
+        console.log(camara1);
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255,0,0)";
+        ctx.moveTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
+        ctx.lineTo(obj1.Vertexs[1].ScreenPosition.x, obj1.Vertexs[1].ScreenPosition.y);
+        ctx.lineTo(obj1.Vertexs[2].ScreenPosition.x, obj1.Vertexs[2].ScreenPosition.y);
+        ctx.lineTo(obj1.Vertexs[0].ScreenPosition.x, obj1.Vertexs[0].ScreenPosition.y);
+        ctx.stroke();
+    </script>
+</body>
+</html>
