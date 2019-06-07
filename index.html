@@ -22,7 +22,7 @@
         canvas.height = clientheight;
         var ctx = canvas.getContext("2d");
 
-        var camara1 = new camara(new vector4(0, 0, -10), new angle3(0, 0, 0), new vector2(clientwidth, clientheight), new vector2(2, 1), 1, clientwidth);
+        var camara1 = new camara(new vector4(0, 0, -10), new angle3(0, 0, 0), new vector2(clientwidth, clientheight), new vector2(2, 1), 1, clientheight*2);
 
         var obj1 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(0, 0, 0), new angle3(0, 0, 0));
         var obj2 = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(2, 2, 2), new angle3(0, 0, 0));
