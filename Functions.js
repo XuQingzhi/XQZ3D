@@ -1,47 +1,9 @@
 // JavaScript source code
-function vector4(x, y, z){
-    this.x = x;
-    this.y = y;
-    this.z = z;
-    this.w = 1;
-}
-
-function vector2(x, y) {
-    this.x = x;
-    this.y = y;
-}
-
-function angle3(x, y, z){
-    this.x = x;
-    this.y = y;
-    this.z = z;
-}
-
-function vertex(LocalPosition){
-    this.LocalPosition = LocalPosition;
-    this.Position = new vector4(null, null, null);
-    this.CamaraPosition = new vector4(null, null, null);
-    this.ScreenPosition = new vector2(null, null);
-}
-
-function mesh(vertex0Number, vertex1Number, vertex2Number){
-    this.Vertexs = [vertex0Number, vertex1Number, vertex2Number];
-}
-
-function obj(Vertexs, Meshs, Position, Angle){
-    this.Vertexs = Vertexs;
-    this.Meshs = Meshs;
-    this.Position = Position;
-    this.Angle = Angle;
-}
-
-function camara(Position, Angle, Screen, Plan, D, Scaling) {
-    this.Screen = Screen;
-    this.Plan = Plan;
-    this.Position = Position;
-    this.Angle = Angle;
-    this.D = D;
-    this.Scaling = Scaling * D;
+function CamaraUpdating(camara){
+    camara.XRotationMatrix = new matrix33(1, 0, 0, 0, Math.cos(camara.Angle.x), -Math.sin(camara.Angle.x), 0, Math.sin(camara.Angle.x), Math.cos(camara.Angle.x));
+    camara.YRotationMatrix = new matrix33(Math.cos(camara.Angle.y), 0, Math.sin(camara.Angle.y), 0, 1, 0, -Math.sin(camara.Angle.y), 0, Math.cos(camara.Angle.y));
+    camara.ZRotationMatrix = new matrix33(Math.cos(camara.Angle.z), -Math.sin(camara.Angle.z), 0, Math.sin(camara.Angle.z), Math.cos(camara.Angle.z), 0, 0, 0, 1)
+    camara.ZYXRotationMatrix =  m33timesm33(m33timesm33(camara.ZRotationMatrix, camara.YRotationMatrix), camara.XRotationMatrix);
 }
 
 function LocalToWorld(obj) {
@@ -55,7 +17,9 @@ function LocalToWorld(obj) {
 function WorldToCamara(obj, camara) {
     for (var i = 0; i < obj.length; i++) {
         for (var v = 0; v < obj[i].Vertexs.length; v++) {
-            obj[i].Vertexs[v].CamaraPosition = new vector4(obj[i].Vertexs[v].Position.x - camara.Position.x, obj[i].Vertexs[v].Position.y - camara.Position.y, obj[i].Vertexs[v].Position.z - camara.Position.z);
+            var PositionMatrix = new matrix13(obj[i].Vertexs[v].Position.x - camara.Position.x, obj[i].Vertexs[v].Position.y - camara.Position.y, obj[i].Vertexs[v].Position.z - camara.Position.z);
+            var CamaraPositionMatrix = m13timesm33(PositionMatrix, camara.XRotationMatrix);
+            obj[i].Vertexs[v].CamaraPosition = new vector4(CamaraPositionMatrix.m11, CamaraPositionMatrix.m12, CamaraPositionMatrix.m13);
         }
     }
 }
@@ -74,15 +38,41 @@ function PerspectiveProjection(obj, camara) {
     }
 }
 
-function PrintObjectMesh(obj, ctx){
+function PrintObjectMesh(obj, ctx, ctxWidth, ctxHeight){
     for (var i = 0; i < obj.length; i++) {
         for (var m = 0; m < obj[i].Meshs.length; m++) {
-            ctx.beginPath();
-            ctx.moveTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
-            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y);
-            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y);
-            ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
-            ctx.fill();
+            var printWeight = 0;
+            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x > 0){
+                printWeight += 1;
+            }else{
+                printWeight -= 1;
+            }
+            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x < ctxWidth){
+                printWeight += 1;
+            }else{
+                printWeight -= 1;
+            }
+
+            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y > 0){
+                printWeight += 1;
+            }else{
+                printWeight -= 1;
+            }
+            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y < ctxHeight){
+                printWeight += 1;
+            }else{
+                printWeight -= 1;
+            }
+            if(printWeight => 4){
+                ctx.beginPath();
+                ctx.moveTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y);
+                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y);
+                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+                ctx.fill();
+            }else{
+
+            }
         }
     }
 }
