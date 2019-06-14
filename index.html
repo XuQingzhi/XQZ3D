@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta name="viewport" content="initial-scale=0.2, maximum-scale=0.2, minimum-scale=0.2, user-scalable=no">
+    <meta name="viewport" content="initial-scale=0.2, maximum-scale=0.2, minimum-scale=0.2, user-scalable=no" charser="utf-8">
     <title>XQZ3D-JavaScript</title>
     <style>
         html,body{
@@ -13,30 +13,30 @@
     </style>
 </head>
 <body style="overflow:-Scroll;overflow-y:hidden;">
-    <canvas id="canvas">你的浏览器不支持HTML5的cavas, 无法显示图像！</canvas>
+    <canvas id="canvas">你的浏览器不支持HTML5的canvas, 无法显示图像！</canvas>
 
     <script src="./Functions.js"></script>
     <script src="./ObjectCreateFunctions.js"></script>
     <script src="./XQZMath.js"></script>
 
     <script>
+        //获取Canvas
         var clientheight = document.body.clientHeight;
         var clientwidth = document.body.clientWidth;
         var canvas = document.getElementById("canvas");
         canvas.width = clientwidth;
         canvas.height = clientheight;
         var ctx = canvas.getContext("2d");
-        
-//        var vector4test = new vector4(0, 0, 1);
 
-//        var vertex1 = new vertex(vector4test);
+        //定义物体和相机
         var camara1 = new camara(new vector4(0, 0, -2), new angle3(0, 0, 0), new vector2(1000, 500), new vector2(2, 1), 1, 1000);
         var ObjectList = new Array(new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(0, 0, 0), new angle3(0, 0, 0)));
-         for(var i = 0; i<100; i++)
+        for(var i = 0; i<100; i++)
         {
             ObjectList[i] = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(Math.random()*10-5, Math.random()*100-50, Math.random()*100-50), new angle3(0, 0, 0));
         }
 
+        //主循环
         function MainLoop(){
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -51,41 +51,43 @@
             window.requestAnimationFrame(MainLoop);
         }
 
+        //实例化对象
         MainLoop();
 
+        //按键检测
         document.onkeydown=function(event){
-        var e = event || window.event || arguments.callee.caller.arguments[0];
-        if(e && e.keyCode==65){ // 按 A 
-            camara1.Position.x -= 0.1;
-        }
-        if(e && e.keyCode==68){ // 按 D 
-            camara1.Position.x += 0.1;
-        }
-        if(e && e.keyCode==83){ // 按 S 
-            camara1.Position.z -= 0.1;
-        }
-        if(e && e.keyCode==87){ // 按 W 
-            camara1.Position.z += 0.1;
-        }
-        if(e && e.keyCode==74){ // 按 J 
-            camara1.Position.y -= 0.1;
-        }
-        if(e && e.keyCode==75){ // 按 K 
-            camara1.Position.y += 0.1;
-        }
-        if(e && e.keyCode==37){ // 按 arrow-left
-            camara1.Angle.y -= 0.1;
-        }
-        if(e && e.keyCode==39){ // 按 arrow-right
-            camara1.Angle.y += 0.1;
-        }
-        if(e && e.keyCode==38){ // 按 arrow-up
-            camara1.Angle.x += 0.1;
-        }
-        if(e && e.keyCode==40){ // 按 arrow-down
-            camara1.Angle.x -= 0.1;
-        }
-    };
+            var e = event || window.event || arguments.callee.caller.arguments[0];
+            if(e && e.keyCode==65){ // 按 A 
+                camara1.Position.x -= 0.1;
+            }
+            if(e && e.keyCode==68){ // 按 D 
+                camara1.Position.x += 0.1;
+            }
+            if(e && e.keyCode==83){ // 按 S 
+                camara1.Position.z -= 0.1;
+            }
+            if(e && e.keyCode==87){ // 按 W 
+                camara1.Position.z += 0.1;
+            }
+            if(e && e.keyCode==74){ // 按 J 
+                camara1.Position.y -= 0.1;
+            }
+            if(e && e.keyCode==75){ // 按 K 
+                camara1.Position.y += 0.1;
+            }
+            if(e && e.keyCode==37){ // 按 arrow-left
+                camara1.Angle.y -= 0.1;
+            }
+            if(e && e.keyCode==39){ // 按 arrow-right
+                camara1.Angle.y += 0.1;
+            }
+            if(e && e.keyCode==38){ // 按 arrow-up
+                camara1.Angle.x += 0.1;
+            }
+            if(e && e.keyCode==40){ // 按 arrow-down
+                camara1.Angle.x -= 0.1;
+            }
+        };
     </script>
 </body>
 </html>
