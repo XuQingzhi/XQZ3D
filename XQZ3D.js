@@ -2,6 +2,36 @@
 //Open Source 3D Engine
 //Project link:https://github.com/xuqingzhi/xqz3d
 
+/*
+<style>
+        html,body{
+            height:100%;
+            border:0;
+            margin:0;
+            padding:0;
+        }
+        #canvas{
+            position:absolute;
+            top:0;
+            left:0;
+        }
+    </style>
+*/
+
+//插入CSS规则
+var HeadTag = document.getElementsByTagName("head")[0];
+var StyleSheet = document.createElement("style");
+StyleSheet.type="text/css";
+StyleSheet.innerHTML = "html,body{height:100%;border:0;margin:0;padding:0;}#canvas{position:absolute;top:0;left:0;}"
+HeadTag.appendChild(StyleSheet);
+
+//插入Meta标签，指定utf-8字符和禁止缩放
+MetaTag = document.createElement("meta");
+MetaTag.name="viewport";
+MetaTag.content="initial-scale=0.2, maximum-scale=0.2, minimum-scale=0.2, user-scalable=no";
+MetaTag.charser="utf-8";
+HeadTag.appendChild(MetaTag);
+
 //Create Object
 function vector4(x, y, z){
     this.x = x;
