@@ -35,7 +35,8 @@
 
             PrintObjectMesh(ObjectList, ctx, clientwidth, clientheight);
 
-            window.requestAnimationFrame(MainLoop);
+            //window.requestAnimationFrame(MainLoop);
+            setTimeout(MainLoop,20);
         }
 
         //实例化对象
@@ -69,10 +70,10 @@
                 camara1.Angle.y += 0.1;
             }
             if(e && e.keyCode==38){ // 按 arrow-up
-                camara1.Angle.x += 0.1;
+                camara1.Angle.x -= 0.03;
             }
             if(e && e.keyCode==40){ // 按 arrow-down
-                camara1.Angle.x -= 0.1;
+                camara1.Angle.x += 0.03;
             }
         };
     </script>
