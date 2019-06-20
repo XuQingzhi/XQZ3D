@@ -76,6 +76,32 @@
                 camara1.Angle.x += 0.03;
             }
         };
+
+        //触控支持
+        var canvas = document.getElementById('canvas');
+        var lastx,lasty,nowx,nowy;
+        canvas.addEventListener('touchstart',function(){
+            event.preventDefault();
+            nowx = Math.floor(event.touches[0].pageX);
+            nowy = Math.floor(event.touches[0].pageY);
+            lastx = Math.floor(event.touches[0].pageX);
+            lasty = Math.floor(event.touches[0].pageY);
+        });
+        canvas.addEventListener('touchmove',function(){
+            event.preventDefault();
+            lastx = nowx;
+            lasty = nowy;
+            nowx = Math.floor(event.touches[0].pageX);
+            nowy = Math.floor(event.touches[0].pageY);
+            camara1.Angle.y += (nowx-lastx)*0.005;
+            camara1.Angle.x += (nowy-lasty)*0.005;
+        }); 
+        canvas.addEventListener('touchend',function(){
+            event.preventDefault();
+            //nowx = Math.floor(event.touches[0].pageX);
+            //nowy = Math.floor(event.touches[0].pageY);
+            //box.innerHTML = "Touchend(" + nowx + "," + nowy + ")";
+        });
     </script>
 </body>
 </html>
