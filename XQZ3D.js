@@ -113,8 +113,8 @@ function matrix33(a11, a12, a13, a21, a22, a23, a31, a32, a33){
 
 //用于计算相机视角的矩阵函数
 function CamaraUpdating(camara){
-    camara.XRotationMatrix = new matrix33(Math.cos(camara.Angle.y), 0, Math.sin(camara.Angle.y), 0, 1, 0, -Math.sin(camara.Angle.y), 0, Math.cos(camara.Angle.y));
-    camara.YRotationMatrix = new matrix33(0,0,0,0,0,0,0,0,0);
+    camara.XRotationMatrix = new matrix33(1, 0, 0, 0, Math.cos(camara.Angle.x), -Math.sin(camara.Angle.x), 0, Math.sin(camara.Angle.x), Math.cos(camara.Angle.x));
+    camara.YRotationMatrix = new matrix33(Math.cos(camara.Angle.y), 0, Math.sin(camara.Angle.y), 0, 1, 0, -Math.sin(camara.Angle.y), 0, Math.cos(camara.Angle.y));
     camara.ZRotationMatrix = new matrix33(Math.cos(camara.Angle.z), -Math.sin(camara.Angle.z), 0, Math.sin(camara.Angle.z), Math.cos(camara.Angle.z), 0, 0, 0, 1)
     camara.ZYXRotationMatrix =  m33timesm33(m33timesm33(camara.ZRotationMatrix, camara.YRotationMatrix), camara.XRotationMatrix);
 }
