@@ -18,7 +18,7 @@
         //定义物体和相机
         var camara1 = new camara(new vector4(0, 0, -2), new angle3(0, 0, 0), new vector2(1000, 500), new vector2(2, 1), 1, 1000);
         var ObjectList = new Array(new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(0, 0, 0), new angle3(0, 0, 0)));
-        for(var i = 0; i<100; i++)
+        for(var i = 0; i<300; i++)
         {
             ObjectList[i] = new obj([new vertex(new vector4(0, 0, 0)), new vertex(new vector4(0, 1, 0)), new vertex(new vector4(1, 0, 0)), new vertex(new vector4(1, 1, 0)), new vertex(new vector4(1, 0, 1)), new vertex(new vector4(1, 1, 1))], [new mesh(0, 1, 2), new mesh(1, 2, 3), new mesh(2, 3, 4), new mesh(3, 4, 5)], new vector4(Math.random()*10-5, Math.random()*100-50, Math.random()*100-50), new angle3(0, 0, 0));
         }
