@@ -82,17 +82,17 @@
         var lastx,lasty,nowx,nowy;
         canvas.addEventListener('touchstart',function(){
             event.preventDefault();
-            nowx = Math.floor(event.touches[0].pageX);
-            nowy = Math.floor(event.touches[0].pageY);
-            lastx = Math.floor(event.touches[0].pageX);
-            lasty = Math.floor(event.touches[0].pageY);
+            nowx = Math.floor(event.targetTouches[0].pageX);
+            nowy = Math.floor(event.targetTouches[0].pageY);
+            lastx = Math.floor(event.targetTouches[0].pageX);
+            lasty = Math.floor(event.targetTouches[0].pageY);
         });
         canvas.addEventListener('touchmove',function(){
             event.preventDefault();
             lastx = nowx;
             lasty = nowy;
-            nowx = Math.floor(event.touches[0].pageX);
-            nowy = Math.floor(event.touches[0].pageY);
+            nowx = Math.floor(event.targetTouches[0].pageX);
+            nowy = Math.floor(event.targetTouches[0].pageY);
             camara1.Angle.y += (nowx-lastx)*0.005;
             camara1.Angle.x += (nowy-lasty)*0.005;
         }); 
@@ -102,6 +102,55 @@
             //nowy = Math.floor(event.touches[0].pageY);
             //box.innerHTML = "Touchend(" + nowx + "," + nowy + ")";
         });
+    </script>
+    <div id="zone_joystick"></div>
+    <script src="./nipplejs.js"></script>
+    <script>
+        //摇杆支持
+        var size = document.body.clientHeight / 2;
+        var nipplestatus = "waiting";
+        var options = {
+            zone: document.getElementById('zone_joystick'),
+            size: size,
+            mode: 'static',
+            color:"#000000",
+            position: {
+                left: '15%',
+                top: '60%'
+            }
+        };
+        var manager = nipplejs.create(options);
+        manager.on("start end",function(evt,data){
+            nipplestatus = "waiting";
+        });
+        manager.on("move",function(evt,data){
+            if(data.direction){
+                nipplestatus = data.direction.angle;
+            }
+        });
+        function nipple(){
+            if(nipplestatus == "up"){
+                camara1.Position.z += 0.2;
+                //console.log(nipplestatus);
+            }
+            else if(nipplestatus == "down"){
+                camara1.Position.z -= 0.2;
+                //console.log(nipplestatus);
+            }
+            else if(nipplestatus == "left"){
+                camara1.Position.x -= 0.2;
+                //console.log(nipplestatus);
+            }
+            else if(nipplestatus == "right"){
+                camara1.Position.x += 0.2;
+                //console.log(nipplestatus);
+            }
+            else if(nipplestatus == "waiting"){
+                //console.log(nipplestatus);
+            }
+            setTimeout(nipple,40);
+        }
+        nipple();
     </script>
 </body>
 </html>
