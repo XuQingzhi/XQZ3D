@@ -125,33 +125,70 @@
             }
         };
         var manager = nipplejs.create(options);
-        manager.on("start end",function(evt,data){
-            nipplestatus = "waiting";
+        manager.on("start end",function(){
+            nipplestatus = 404;
         });
         manager.on("move",function(evt,data){
-            if(data.direction){
-                nipplestatus = data.direction.angle;
+            if(data.distance){
+                console.log(data.angle.degree);
+                nipplestatus = data.angle.degree;
             }
         });
         function nipple(){
-            if(nipplestatus == "up"){
+            if(nipplestatus >= 337.5 && nipplestatus < 360){
+                //右1
+                //right
+                camara1.Position.x += 0.25;
+            }
+            else if(nipplestatus >= 0 && nipplestatus < 22.5){
+                //右2
+                //right
+                camara1.Position.x += 0.25;
+            }
+            else if(nipplestatus >= 22.5 && nipplestatus < 67.5){
+                //右上
+                //front
                 camara1.Position.z += 0.25;
-                //console.log(nipplestatus);
+                //right
+                camara1.Position.x += 0.25;
             }
-            else if(nipplestatus == "down"){
+            else if(nipplestatus >= 67.5 && nipplestatus < 112.5){
+                //上
+                //front
+                camara1.Position.z += 0.25;
+            }
+            else if(nipplestatus >= 112.5 && nipplestatus < 157.5){
+                //左上
+                //left
+                camara1.Position.x -= 0.25;
+                //front
+                camara1.Position.z += 0.25;
+            }
+            else if(nipplestatus >= 157.5 && nipplestatus < 202.5){
+                //左
+                //left
+                camara1.Position.x -= 0.25;
+                //front
+                camara1.Position.z += 0.25;
+            }
+            else if(nipplestatus >= 202.5 && nipplestatus < 247.5){
+                //左下
+                //left
+                camara1.Position.x -= 0.25;
+                //back
                 camara1.Position.z -= 0.25;
-                //console.log(nipplestatus);
             }
-            else if(nipplestatus == "left"){
-                camara1.Position.x -= 0.1;
-                //console.log(nipplestatus);
+            else if(nipplestatus >= 247.5 && nipplestatus < 292.5){
+                //下
+                //back
+                camara1.Position.z -= 0.25;
             }
-            else if(nipplestatus == "right"){
-                camara1.Position.x += 0.1;
-                //console.log(nipplestatus);
-            }
-            else if(nipplestatus == "waiting"){
-                //console.log(nipplestatus);
+            else if(nipplestatus >= 292.5 && nipplestatus < 337.5){
+                //右下
+                //right
+                camara1.Position.x += 0.25;
+                //back
+                camara1.Position.z -= 0.25;
             }
             setTimeout(nipple,40);
         }
