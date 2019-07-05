@@ -133,7 +133,7 @@ function WorldToCamara(obj, camara) {
     for (var i = 0; i < obj.length; i++) {
         for (var v = 0; v < obj[i].Vertexs.length; v++) {
             var PositionMatrix = new matrix13(obj[i].Vertexs[v].Position.x - camara.Position.x, obj[i].Vertexs[v].Position.y - camara.Position.y, obj[i].Vertexs[v].Position.z - camara.Position.z);
-            var CamaraPositionMatrix = m13timesm33(PositionMatrix, camara.XRotationMatrix);
+            var CamaraPositionMatrix = m13timesm33(PositionMatrix, camara.ZYXRotationMatrix);
             obj[i].Vertexs[v].CamaraPosition = new vector4(CamaraPositionMatrix.m11, CamaraPositionMatrix.m12, CamaraPositionMatrix.m13);
         }
     }
