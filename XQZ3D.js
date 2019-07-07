@@ -22,7 +22,14 @@ MetaTag.content="initial-scale=0.2, maximum-scale=0.2, minimum-scale=0.2, user-s
 MetaTag.charser="utf-8";
 HeadTag.appendChild(MetaTag);
 
-
+function init(){
+    clientheight = document.body.clientHeight;
+    clientwidth = document.body.clientWidth;
+    canvas = document.getElementById("canvas");
+    canvas.width = clientwidth;
+    canvas.height = clientheight;
+    ctx = canvas.getContext("2d");
+}
 
 /*
 **定义类和对象，构造生成器

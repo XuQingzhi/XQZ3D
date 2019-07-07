@@ -13,12 +13,7 @@
     <canvas id="canvas"></canvas>
     <script>
         //获取Canvas
-        var clientheight = document.body.clientHeight;
-        var clientwidth = document.body.clientWidth;
-        var canvas = document.getElementById("canvas");
-        canvas.width = clientwidth;
-        canvas.height = clientheight;
-        var ctx = canvas.getContext("2d");
+        init();
 
         //定义物体和相机
         var camara1 = new camara(new vector4(0, 0, -2), new angle3(0, 0, 0), new vector2(clientwidth, clientheight), new vector2(2, 1), 1, clientheight);
