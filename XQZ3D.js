@@ -68,6 +68,7 @@ function obj(Vertexs, Meshs, Position, Angle){
     this.Meshs = Meshs;
     this.Position = Position;
     this.Angle = Angle;
+    this.disp = true;
 }
 
 //相机
@@ -141,6 +142,9 @@ function WorldToCamara(obj, camara) {
 
 //将相机坐标转换成屏幕坐标，即透视投影
 function PerspectiveProjection(obj, camara) {
+    for(var i = 0;i<obj.length;i++){
+        obj[i].disp = true;
+    }
     for (var i = 0; i < obj.length; i++) {
         for (var v = 0; v < obj[i].Vertexs.length; v++) {
             if(obj[i].Vertexs[v].CamaraPosition.z > camara.D){
@@ -149,6 +153,7 @@ function PerspectiveProjection(obj, camara) {
             }else{
                 obj[i].Vertexs[v].ScreenPosition.x = null;
                 obj[i].Vertexs[v].ScreenPosition.y = null;  
+                obj[i].disp = false;
             }
         }
     }
@@ -157,38 +162,40 @@ function PerspectiveProjection(obj, camara) {
 //绘制物体表面，即填色函数
 function PrintObjectMesh(obj, ctx, ctxWidth, ctxHeight){
     for (var i = 0; i < obj.length; i++) {
-        for (var m = 0; m < obj[i].Meshs.length; m++) {
-            var printWeight = 0;
-            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x > 0){
-                printWeight += 1;
-            }else{
-                printWeight -= 1;
-            }
-            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x < ctxWidth){
-                printWeight += 1;
-            }else{
-                printWeight -= 1;
-            }
-
-            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y > 0){
-                printWeight += 1;
-            }else{
-                printWeight -= 1;
-            }
-            if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y < ctxHeight){
-                printWeight += 1;
-            }else{
-                printWeight -= 1;
-            }
-            if(printWeight => 4){
-                ctx.beginPath();
-                ctx.moveTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
-                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y);
-                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y);
-                ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
-                ctx.fill();
-            }else{
-
+        if(obj[i].disp == true){
+            for (var m = 0; m < obj[i].Meshs.length; m++) {
+                var printWeight = 0;
+                if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x > 0){
+                    printWeight += 1;
+                }else{
+                    printWeight -= 1;
+                }
+                if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x < ctxWidth || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x < ctxWidth){
+                    printWeight += 1;
+                }else{
+                    printWeight -= 1;
+                }
+    
+                if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y > 0 || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y > 0){
+                    printWeight += 1;
+                }else{
+                    printWeight -= 1;
+                }
+                if (obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y < ctxHeight || obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y < ctxHeight){
+                    printWeight += 1;
+                }else{
+                    printWeight -= 1;
+                }
+                if(printWeight => 4){
+                    ctx.beginPath();
+                    ctx.moveTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+                    ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[1]].ScreenPosition.y);
+                    ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[2]].ScreenPosition.y);
+                    ctx.lineTo(obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.x, obj[i].Vertexs[obj[i].Meshs[m].Vertexs[0]].ScreenPosition.y);
+                    ctx.fill();
+                }else{
+    
+                }
             }
         }
     }
